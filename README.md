@@ -86,4 +86,17 @@ This is the place for you to write reflections:
 
 #### Reflection Subscriber-1
 
+1. Menurut saya, RwLock diperlukan karena data notifikasi bisa diakses oleh banyak bagian program secara bersamaan, terutama saat ada beberapa request masuk. Karena Vec biasa tidak thread-safe, kita perlu mekanisme sinkronisasi agar tidak terjadi race condition saat data dibaca atau ditulis.
+Alasan memakai RwLock dan bukan Mutex adalah karena RwLock lebih cocok untuk kasus yang memiliki banyak operasi baca dan lebih sedikit operasi tulis. Dengan RwLock, beberapa thread bisa membaca data secara bersamaan selama tidak ada thread yang sedang menulis. Kalau memakai Mutex, baik operasi baca maupun tulis harus menunggu lock yang sama, jadi akses akan lebih terbatas dan kurang efisien.
+
+Jaadi menurut saya RwLock dipilih karena lebih fleksibel dan lebih cocok untuk kasus notifikasi yang kemungkinan lebih sering dibaca daripada diubah.
+
+2. 
+Menurut saya, alasannya karena Rust sangat ketat soal safety, terutama untuk mencegah bug yang berhubungan dengan shared mutable state. Jika isi variabel static bisa diubah sembarangan seperti di Java, maka akan lebih mudah terjadi race condition atau perilaku yang tidak aman saat program berjalan secara concurrent.
+
+Rust ingin memastikan bahwa setiap mutasi terhadap data global benar-benar aman dan terkontrol. Karena itu, kalau kita ingin punya data global yang bisa diubah, kita perlu membungkusnya dengan mekanisme yang aman seperti RwLock, Mutex, atau struktur lain yang thread-safe. lazy_static membantu membuat inisialisasi variabel global yang kompleks, tetapi akses mutablenya tetap harus mengikuti aturan Rust. Rust tidak melarang tanpa alasan, tetapi justru memaksa programmer untuk menulis kode yang lebih aman dan lebih jelas dalam mengelola data global.
+
+
+
+
 #### Reflection Subscriber-2
