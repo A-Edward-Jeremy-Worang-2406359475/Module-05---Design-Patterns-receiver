@@ -100,3 +100,15 @@ Rust ingin memastikan bahwa setiap mutasi terhadap data global benar-benar aman 
 
 
 #### Reflection Subscriber-2
+
+1. ssaya sempat melihat beberapa bagian lain seperti src/lib.rs Dari situ saya belajar bagaimana konfigurasi global seperti APP_CONFIG dan REQUEST_CLIENT diinisialisasi dan digunakan di seluruh aplikasi. Saya juga jadi lebih paham bagaimana environment variable dibaca dan dipakai untuk menentukan URL instance dan publisher.
+
+Selain itu, saya melihat bagaimana struktur project diatur supaya modular (model, repository, service, controller), sehingga tiap bagian punya tanggung jawab masing-masing. Ini membantu saya memahami alur data dari request sampai response.
+
+2. Menurut saya, Observer pattern sangat mempermudah penambahan subscriber karena publisher tidak perlu tahu detail tiap subscriber. Selama subscriber sudah terdaftar subscribe, publisher hanya perlu mengirim notifikasi ke semua subscriber yang ada.
+Ketika kita menambah instance Receiver misalnya port 8001, 8002, 80033, sistem tetap bekerja tanpa perlu perubahan besar pada kode publisher. Ini menunjukkan bahwa Observer pattern scalable untuk penambahan subscriber.
+Namun, jika menambah lebih dari satu Main app (publisher), sistem menjadi lebih kompleks. Karena subscriber harus tahu ke publisher mana mereka subscribe, dan bisa terjadi inkonsistensi data antar publisher. Jadi, menambah subscriber itu mudah, tapi menambah publisher tidak semudah itu dan butuh desain tambahan.
+
+3.Saya mencoba menggunakan Postman untuk menguji endpoint seperti subscribe, unsubscribe, dan receive notification. Menurut saya, Postman sangat membantu karena kita bisa langsung melihat response dari API dan memastikan alur sistem berjalan dengan benar.
+Fitur yang saya gunakan antara lain sepertCollection untuk mengelompokkan endpoint, Body JSON untuk mengirim data dan History untuk melihat request sebelumnya
+Menurut saya Postman sangat berguna baik untuk tugas ini maupun untuk group project, karena mempermudah testing tanpa perlu frontend dan membantu debugging API dengan cepat.
